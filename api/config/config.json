@@ -1,0 +1,24 @@
+{
+  "development": {
+    "database": "slashdata",
+    "password": "password",
+    "username": "user",
+    "dialect": "sqlite",
+    "storage": "./db.sqlite3",
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "idle": 10000
+    }
+  },
+  "test": {
+    "dialect": "sqlite",
+    "storage": "./db.sqlite3"
+  },
+  "production": {
+    "database": "slashdata",
+    "password": "password",
+    "username": "user",
+    "dialect": "postgres"
+  }
+}
