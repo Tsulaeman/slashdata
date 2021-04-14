@@ -24,3 +24,7 @@ main.ant-layout-content {
 .ngram-link-item:hover {
   background-color: #f0f2f5;
 }
+.ngram-link-item.list-active {
+  background-color: #baccef;
+}
+

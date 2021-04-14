@@ -8,6 +8,7 @@ import {
   Switch,
   Row,
   Col,
+  notification,
 } from 'antd';
 
 import Main from '../components/main';
@@ -38,7 +39,10 @@ export const onFinish = (values) => {
     },
     body: JSON.stringify(values),
   })
-  console.log('Success:', values);
+  notification.success({
+    message: `Ngram submitted successfully`,
+    placement: 'bottomLeft'
+  });
 };
 
 /**
@@ -46,7 +50,10 @@ export const onFinish = (values) => {
  * @param {object} errorInfo
  */
 export const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo);
+  notification.error({
+    message: `Ooops, You have some errors in your form`,
+    placement: 'bottomLeft'
+  });
 };
 
 /**

@@ -18,6 +18,7 @@ const Ngram = () => {
   const [ ngram, setNgram ] = useState([]);
   const [ ngramLoading, setNgramLoading ] = useState(false);
   const [ displayColumn, setDisplayDisplayColumn ] = useState(true);
+  const [ clickedListID, setClickedListID ] = useState(0);
 
   const histogramConfig = {
     data: ngram,
@@ -78,7 +79,11 @@ const Ngram = () => {
           <List
             dataSource={data}
             renderItem={(item) => (
-              <List.Item className="ngram-link-item" onClick={() => getNgram(item)}>
+              <List.Item className={`ngram-link-item ${item.id === clickedListID? "list-active":""}`} onClick={() => {
+                  getNgram(item);
+                  setClickedListID(item.id)
+                }}
+              >
                 <Typography.Text>
                   {item.body}
                 </Typography.Text>
