@@ -63,3 +63,5 @@ buck-out/
 package-lock.json
 
 .expo/web
+
+*.sqlite3

@@ -6,23 +6,20 @@ import {
   Route
 } from 'react-router-dom';
 
-import Main from './components/main';
 import Ngram from './containers/ngrams';
 import Home from './containers/home';
 
 function App() {
   return (
     <Router>
-      <Main>
-        <Switch>
-          <Route path="/view">
-            <Ngram />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </Main>
+      <Switch>
+        <Route path="/view">
+          <Ngram />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
     </Router>
   );
 }

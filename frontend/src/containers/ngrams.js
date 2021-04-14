@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Col, List, Row, Spin, Switch, Table, Typography } from 'antd';
 import { Column } from '@ant-design/charts';
+import Main from '../components/main';
 
 const baseurl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 
+/**
+ * Container component that displayes the list of ngrams
+ * and a selected ngram is dplayed as either a table or
+ * a histogram depending on what the user selects
+ * @returns
+ */
 const Ngram = () => {
 
   const [ data, setData ] = useState([]);
@@ -42,18 +49,27 @@ const Ngram = () => {
     });
   }, [loaded]);
 
+  const getNgram = (item) => {
+    setNgramLoading(true);
+    fetch(`${baseurl}/ngram/${item.id}`)
+    .then(response => response.json())
+    .then(ngram => {
+      setNgram(ngram);
+      setNgramLoading(false);
+    });
+  };
+
   if (data.length < 1){
     return <Spin />
   }
 
   return (
-    <>
+    <Main>
       <Row justify='end'>
         <Col span={18}></Col>
         <Col span={6}>
           Table <Switch defaultChecked={displayColumn} onChange={(value) => {
             setDisplayDisplayColumn(value);
-            console.log(value)
           }} /> Histogram
         </Col>
       </Row>
@@ -62,15 +78,7 @@ const Ngram = () => {
           <List
             dataSource={data}
             renderItem={(item) => (
-              <List.Item className="ngram-link-item" onClick={(el) => {
-                setNgramLoading(true);
-                fetch(`${baseurl}/ngram/${item.id}`)
-                .then(response => response.json())
-                .then(ngram => {
-                  setNgram(ngram);
-                  setNgramLoading(false);
-                });
-              }}>
+              <List.Item className="ngram-link-item" onClick={() => getNgram(item)}>
                 <Typography.Text>
                   {item.body}
                 </Typography.Text>
@@ -87,11 +95,18 @@ const Ngram = () => {
           }
 
           {
-            !ngramLoading && !displayColumn && <Table dataSource={ngram} columns={tableColumns} />
+            !ngramLoading
+            &&
+            !displayColumn
+            &&
+            <Table
+              rowKey={(record) => (`${record.ngram}_${record.count}`) }
+              dataSource={ngram} columns={tableColumns}
+            />
           }
         </Col>
       </Row>
-    </>
+    </Main>
   )
 }
 

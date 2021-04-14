@@ -33,13 +33,9 @@ class NgramController {
           const node = ngrams[y];
           // We traverse the y to find similar ngrams
           // only add ngrams when they have not been 'seen' and are the same
-          // if (result.isCaseSensitive) {
           if (pointer === node) {
             counts[pointer] += 1;
           }
-          // } else if (pointer.toLowerCase() === node.toLowerCase()) {
-          //   counts[pointer] += 1;
-          // }
           seen.push(pointer);
         }
         // push into the results

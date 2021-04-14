@@ -10,6 +10,8 @@ import {
   Col,
 } from 'antd';
 
+import Main from '../components/main';
+
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
 
@@ -21,7 +23,13 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-const onFinish = (values) => {
+/**
+ * The callback function when the form us submitted
+ * Put outside the component for possible reuse, although
+ * it can be in a helpers folder
+ * @param {object} values The form values when submited
+ */
+export const onFinish = (values) => {
   fetch(`${baseUrl}/ngram`, {
     method: 'POST',
     headers: {
@@ -33,56 +41,65 @@ const onFinish = (values) => {
   console.log('Success:', values);
 };
 
-const onFinishFailed = (errorInfo) => {
+/**
+ * The callback function when the form errs
+ * @param {object} errorInfo
+ */
+export const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
 
+/**
+ * The home component that houses the form and UI that created the ngram
+ * @returns
+ */
 const Home = () => {
   const [form] = Form.useForm();
-  console.log(baseUrl);
   return (
-    <Row justify="space-around" align="middle">
-      <Col span={20}>
-        <Form
-          form={form}
-          { ...layout }
-          labelCol={{ span: 4 }}
-          wrapperCol={{ span: 14 }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          initialValues={{
-            length: 100,
-            ngram: 1,
-            isCaseSensitive: false
-          }}
-        >
-          <Form.Item
-            label="Body"
-            name="body"
-            rules={[
-              {
-                required: true,
-                message: 'This field is required'
-              }
-            ]}
+    <Main>
+      <Row justify="space-around" align="middle">
+        <Col span={20}>
+          <Form
+            form={form}
+            { ...layout }
+            labelCol={{ span: 4 }}
+            wrapperCol={{ span: 14 }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            initialValues={{
+              length: 100,
+              ngram: 1,
+              isCaseSensitive: false
+            }}
           >
-            <Input placeholder="Enter the body here" />
-          </Form.Item>
-          <Form.Item label="Case Sensitive" valuePropName="checked" name="isCaseSensitive">
-            <Switch />
-          </Form.Item>
-          <Form.Item label="Sequence length" name="ngram">
-            <InputNumber />
-          </Form.Item>
-          <Form.Item label="length" name="length">
-            <InputNumber />
-          </Form.Item>
-          <Form.Item { ...tailLayout }>
-            <Button type="primary" htmlType="submit">Submit</Button>
-          </Form.Item>
-        </Form>
-      </Col>
-    </Row>
+            <Form.Item
+              label="Body"
+              name="body"
+              rules={[
+                {
+                  required: true,
+                  message: 'This field is required'
+                }
+              ]}
+            >
+              <Input placeholder="Enter the body here" />
+            </Form.Item>
+            <Form.Item label="Case Sensitive" valuePropName="checked" name="isCaseSensitive">
+              <Switch />
+            </Form.Item>
+            <Form.Item label="Sequence length" name="ngram">
+              <InputNumber />
+            </Form.Item>
+            <Form.Item label="length" name="length">
+              <InputNumber />
+            </Form.Item>
+            <Form.Item { ...tailLayout }>
+              <Button type="primary" htmlType="submit">Submit</Button>
+            </Form.Item>
+          </Form>
+        </Col>
+      </Row>
+    </Main>
   )
 }
 
