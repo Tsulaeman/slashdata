@@ -3,12 +3,14 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import cors from 'cors';
 
 import indexRouter from './routes/index';
 
 const app = express();
 const port = 8000;
 
+app.use(cors());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

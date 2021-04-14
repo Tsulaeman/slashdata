@@ -11,7 +11,9 @@ class NgramController {
     const seen = []; // ngram that has been seen
     Ngram.findByPk(id).then((result) => {
       // let's split the word into an array and filter out white space
-      const word = result.body.split('').filter((letter) => letter !== ' ');
+      let word = result.body.split('').filter((letter) => letter !== ' ');
+      // Here we process case sensitive letters
+      word = word.map((value) => (result.isCaseSensitive ? value : value.toUpperCase()));
       const ngrams = [];
       // build the ngrams sequence
       for (let i = 0; i < word.length; i += 1) {
@@ -31,13 +33,13 @@ class NgramController {
           const node = ngrams[y];
           // We traverse the y to find similar ngrams
           // only add ngrams when they have not been 'seen' and are the same
-          if (result.isCaseSensitive) {
-            if (pointer === node) {
-              counts[pointer] += 1;
-            }
-          } else if (pointer.toLowerCase() === node.toLowerCase()) {
+          // if (result.isCaseSensitive) {
+          if (pointer === node) {
             counts[pointer] += 1;
           }
+          // } else if (pointer.toLowerCase() === node.toLowerCase()) {
+          //   counts[pointer] += 1;
+          // }
           seen.push(pointer);
         }
         // push into the results
@@ -52,12 +54,10 @@ class NgramController {
 
   static sort(ngrams) {
     return ngrams.sort((a, b) => b.count - a.count);
-    // console.log(sorted);
   }
 
   static save(req, res) {
     const { body } = req;
-    console.log(body);
     Ngram.create(body).then((result) => {
       res.send(result);
     });
